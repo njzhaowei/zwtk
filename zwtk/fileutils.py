@@ -9,18 +9,21 @@ from pathlib import Path
 import shutil
 
 def rmfile(pth):
+    ''' Remove file(and only file) if exists'''
     if os.path.isfile(str(pth)):
         os.remove(str(pth))
 
 def rmdir(pth):
+    ''' Remove directory empty or not, ignore any error.'''
     shutil.rmtree(str(pth), ignore_errors=True)
 
 def move(src, dst):
+    ''' Move file or directory'''
     shutil.move(src, dst)
 
 def writefile(path, txt, enc='utf-8'):
-    """Write string to file and create parent dirs automatically.
-    """
+    '''Write string to file and create parent dirs automatically.
+    '''
     if not isinstance(txt, str):
         txt = str(txt)
     if not Path(path).parent.exists():
@@ -30,8 +33,8 @@ def writefile(path, txt, enc='utf-8'):
         fp.flush()
 
 def readfile(path, enc='utf-8', default=None):
-    """Read string from file with default value.
-    """
+    '''Read string from file with default value.
+    '''
     rtn = None
     if not Path(path).exists() and default is not None:
         return default
@@ -42,8 +45,8 @@ def readfile(path, enc='utf-8', default=None):
     return rtn
 
 def writebin(path, dat):
-    """Write binary data to file and create parent dirs automatically.
-    """
+    '''Write binary data to file and create parent dirs automatically.
+    '''
     if not Path(path).parent.exists():
         Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(str(path), 'wb') as fp:
@@ -51,8 +54,8 @@ def writebin(path, dat):
         fp.flush()
 
 def readbin(path, default=None):
-    """Read binary data from file with default value.
-    """
+    '''Read binary data from file with default value.
+    '''
     rtn = None
     if not Path(path).exists() and default is not None:
         return default
@@ -61,16 +64,16 @@ def readbin(path, default=None):
     return rtn
 
 def writejson(path, o, enc='utf-8'):
-    """Write json data to file and create parent dirs automatically.
-    """
+    '''Write json data to file and create parent dirs automatically.
+    '''
     if not Path(path).parent.exists():
         Path(path).parent.mkdir(parents=True, exist_ok=True)
     with codecs.open(str(path), 'w', enc) as fp:
         json.dump(o, fp, ensure_ascii=False)
 
 def readjson(path, enc='utf-8', default=None):
-    """Read json data from file with default value.
-    """
+    '''Read json data from file with default value.
+    '''
     rtn = None
     if not Path(path).exists() and default is not None:
         return default
@@ -79,8 +82,8 @@ def readjson(path, enc='utf-8', default=None):
     return rtn
 
 def writecsv(path, array2d, delimiter=',', enc='utf-8'):
-    """Write csv data to file and create parent dirs automatically.
-    """
+    '''Write csv data to file and create parent dirs automatically.
+    '''
     if not Path(path).parent.exists():
         Path(path).parent.mkdir(parents=True, exist_ok=True)
     with codecs.open(str(path), 'w', enc) as fp:
@@ -88,8 +91,8 @@ def writecsv(path, array2d, delimiter=',', enc='utf-8'):
         writer.writerows(array2d)
 
 def readcsv(path, enc='utf-8', default=None):
-    """Read csv data from file with default value.
-    """
+    '''Read csv data from file with default value.
+    '''
     rtn = None
     if not Path(path).exists() and default is not None:
         return default
@@ -99,6 +102,7 @@ def readcsv(path, enc='utf-8', default=None):
     return rtn
 
 def file_encode_convert(src, dst, src_encode='utf-8', dst_encode='gbk'):
+    '''Change file encode'''
     src_encode = src_encode.lower()
     dst_encode = dst_encode.lower()
     with codecs.open(src, 'r', src_encode) as fp:
@@ -108,6 +112,7 @@ def file_encode_convert(src, dst, src_encode='utf-8', dst_encode='gbk'):
         fp.flush()
 
 def md5(fp):
+    '''md5 file'''
     hash_md5 = hashlib.md5()
     with open(fp, 'rb') as f:
         for chunk in iter(lambda: f.read(4096), b''):
@@ -115,13 +120,13 @@ def md5(fp):
     return hash_md5.hexdigest()
 
 def zip(srcpth, destpth=None, pwd=None, pth7z=None):
-    """Use 7z.exe or zip command to zip file or dir
+    '''Use 7z.exe(Win, 7z.exe should in path) or zip command(Linux) to zip file or dir
     :param srcpth: ./dir/file => file in zip, dir/file => dir/file in zip
     :param destpth: zip in srcpth if None
     :param pwd: no password if not set
     :param pth7z: 7z.exe in ./bin in win by default, zip command in linux
 
-    """
+    '''
     iswin = True if sys.platform == 'win32' else False
     spath = Path(srcpth)
     sname = '%s.zip'%spath.stem if spath.is_file() else '%s.zip'%spath.name
@@ -142,6 +147,8 @@ def zip(srcpth, destpth=None, pwd=None, pth7z=None):
     return destfile.exists()
 
 def unzip(srcpth, destpth=None, pwd=None, pth7z=None):
+    '''Unzip file use 7z.exe(Win, 7z.exe should in path) or unzip command(Linux)
+    '''
     iswin = True if sys.platform == 'win32' else False
     cmd = pth7z or ( './bin/7z.exe' if iswin else 'unzip' )    
     cmds = [str(cmd)]
@@ -159,6 +166,7 @@ def unzip(srcpth, destpth=None, pwd=None, pth7z=None):
     return destfile.exists()
 
 def dirsize(pth):
+    '''Calc directory size in byte'''
     size = 0
     for root, dirs, files in os.walk(pth):
         size += sum([os.path.getsize(os.path.join(root, file)) for file in files])

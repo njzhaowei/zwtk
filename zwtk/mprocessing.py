@@ -2,6 +2,7 @@ import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 def multiprocess_cmd(cmds, max_workers=3):
+    '''Run multi processes for commands'''
     rtn = []
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         cmds = list(cmds)
@@ -12,6 +13,7 @@ def multiprocess_cmd(cmds, max_workers=3):
     return rtn
 
 def multiprocess_run(cbfunc, args, max_workers=3):
+    '''Run multi processes for callback function'''
     rtn = []
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         args = list(args)

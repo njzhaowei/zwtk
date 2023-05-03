@@ -22,7 +22,12 @@ def write_pidfile(dir='.'):
     return pth
 
 def run_shell(cmd, *args):
+    '''Run command and get result text. Try decoded by utf-8 and gbk.'''
     cmds = [cmd]
     cmds.extend(list(args))
-    r = subprocess.run(cmds, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    out = subprocess.run(cmds, stdout=subprocess.PIPE, shell=True).stdout
+    try:
+        r = out.decode('utf-8')
+    except:
+        r = out.decode('gbk')
     return r

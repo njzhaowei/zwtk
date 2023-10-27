@@ -41,6 +41,7 @@ with open(pth, 'r+', 'utf-8') as f:
         about[pkg_info[i]] = pkg_info[i+1]
     
     f.seek(0)
+    f.truncate()
     f.writelines(lines)
     f.flush()
 

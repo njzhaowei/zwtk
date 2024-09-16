@@ -3,6 +3,7 @@ import os
 import json
 import codecs
 from pathlib import Path
+from .dlso import dict2obj
 
 class Config():
     def __init__(self, fp=None, default=None):
@@ -17,6 +18,8 @@ class Config():
             with codecs.open(self.path, 'r', 'utf-8') as f:
                 kv = json.load(f)
                 for key, val in kv.items():
+                    if isinstance(val, dict):
+                        val = dict2obj(val)
                     self.data[key] = val
         return self
 

@@ -5,7 +5,7 @@ from pathlib import Path
 from zwtk import fileutils
 from zwtk.config import Config
 
-BASEPATH = Path('./tests/data/network')
+BASEPATH = Path('./tests/data/config')
 TEMPPATH = BASEPATH / 'tmp'
 
 def setup_module():
@@ -16,13 +16,13 @@ def teardown_module():
     fileutils.rmdir(TEMPPATH)
 
 def test_config():
-    cfg = Config(BASEPATH/'test_config.json', default={'fld0':123})
-    assert cfg.fld0==123
+    cfg = Config(BASEPATH/'test_config.json', default={'fld0':123, 'fldobj': {'objfld0': 456}})
+    assert cfg.fld0 == 123 and cfg.fldobj.objfld0 == 456
 
 def test_set():
     cfg = Config()
     cfg.set('fld0', 123)
-    assert cfg.fld0==123
+    assert cfg.fld0 == 123
 
 def test_has():
     cfg = Config(BASEPATH/'test_config.json')

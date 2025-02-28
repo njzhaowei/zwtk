@@ -14,24 +14,89 @@ def is_chinese(c):
     else:
         return False
 
-def is_chinese_punctuation(c):
-    arr = [
-        u'\u3002',u'\uFF1F',u'\uFF01',u'\u3010',u'\u3011',u'\uFF0C',u'\u3001',u'\uFF1B',
-        u'\uFF1A',u'\u300C',u'\u300D',u'\u300E',u'\u300F',u'\u2019',u'\u201C',u'\u201D',
-        u'\u2018',u'\uFF08',u'\uFF09',u'\u3014',u'\u3015',u'\u2026',u'\u2013',u'\uFF0E',
-        u'\u2014',u'\u300A',u'\u300B',u'\u3008',u'\u3009'
-    ]
-    return c in arr
+# def is_chinese_punctuation(c):
+#     arr = [
+#         u'\u3002',u'\uFF1F',u'\uFF01',u'\u3010',u'\u3011',u'\uFF0C',u'\u3001',u'\uFF1B',
+#         u'\uFF1A',u'\u300C',u'\u300D',u'\u300E',u'\u300F',u'\u2019',u'\u201C',u'\u201D',
+#         u'\u2018',u'\uFF08',u'\uFF09',u'\u3014',u'\u3015',u'\u2026',u'\u2013',u'\uFF0E',
+#         u'\u2014',u'\u300A',u'\u300B',u'\u3008',u'\u3009'
+#     ]
+#     return c in arr
 
-def is_english_punctuation(c):
-    arr = [
-        '!', '"', '#', '$', '%', '&',
-        "'", '(', ')', '*', '+', ',', '-', 
-        '.', '/', ':', ';', '<', '=', '>', 
-        '?', '@', '[', '\\', ']', '\^', '_', 
-        '`', '{', '|', '}', '~'
+# def is_english_punctuation(c):
+#     arr = [
+#         '!', '"', '#', '$', '%', '&',
+#         "'", '(', ')', '*', '+', ',', '-', 
+#         '.', '/', ':', ';', '<', '=', '>', 
+#         '?', '@', '[', '\\', ']', '\^', '_', 
+#         '`', '{', '|', '}', '~'
+#     ]
+#     return c in arr
+
+def is_chinese_char(char):
+    """
+    判断一个字符是否是中文字符
+    """
+    # 中文字符的 Unicode 范围
+    ranges = [
+        (0x4E00, 0x9FFF),  # 基本汉字
+        (0x3400, 0x4DBF),  # 扩展 A
+        (0x20000, 0x2A6DF),  # 扩展 B
+        (0x2A700, 0x2B73F),  # 扩展 C
+        (0x2B740, 0x2B81F),  # 扩展 D
+        (0x2B820, 0x2CEAF),  # 扩展 E
+        (0xF900, 0xFAFF),    # 兼容汉字
+        (0x2F800, 0x2FA1F),  # 兼容扩展
     ]
-    return c in arr
+
+    # 将字符转换为 Unicode 编码
+    code = ord(char)
+
+    # 检查字符是否在任何一个范围内
+    for start, end in ranges:
+        if start <= code <= end:
+            return True
+    return False
+
+def is_chinese_punctuation(char):
+    """
+    判断一个字符是否是中文标点符号
+    """
+    # 中文标点符号的 Unicode 范围
+    ranges = [
+        (0x3000, 0x303F),  # 常用中文标点
+        (0xFF00, 0xFFEF),  # 全角标点
+    ]
+
+    # 将字符转换为 Unicode 编码
+    code = ord(char)
+
+    # 检查字符是否在任何一个范围内
+    for start, end in ranges:
+        if start <= code <= end:
+            return True
+    return False
+
+def is_english_punctuation(char):
+    """
+    判断一个字符是否是英文标点符号
+    """
+    # 英文标点符号的 Unicode 范围
+    ranges = [
+        (0x0020, 0x002F),  # 空格和基本标点
+        (0x003A, 0x0040),  # :;<=>?@
+        (0x005B, 0x0060),  # [\]^_`
+        (0x007B, 0x007E),  # {|}~
+    ]
+
+    # 将字符转换为 Unicode 编码
+    code = ord(char)
+
+    # 检查字符是否在任何一个范围内
+    for start, end in ranges:
+        if start <= code <= end:
+            return True
+    return False
 
 def hasdigit(s):
     m = re.compile(r'\d')

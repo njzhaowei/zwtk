@@ -62,10 +62,16 @@ def is_chinese_punctuation(char):
     """
     判断一个字符是否是中文标点符号
     """
-    # 中文标点符号的 Unicode 范围
+    # 中文标点符号的 Unicode 范围 https://symbl.cc/cn/unicode-table/#cjk-symbols-and-punctuation
     ranges = [
-        (0x3000, 0x303F),  # 常用中文标点
-        (0xFF00, 0xFFEF),  # 全角标点
+        (0x3000, 0x3003),
+        (0x3008, 0x3011),
+        (0x3013, 0x301F),
+        # 全角标点
+        (0xFF00, 0xFF0F),
+        (0xFF1A, 0xFF20),
+        (0xFF3B, 0xFF40),
+        (0xFF5B, 0xFF64),
     ]
 
     # 将字符转换为 Unicode 编码
@@ -87,6 +93,24 @@ def is_english_punctuation(char):
         (0x003A, 0x0040),  # :;<=>?@
         (0x005B, 0x0060),  # [\]^_`
         (0x007B, 0x007E),  # {|}~
+    ]
+
+    # 将字符转换为 Unicode 编码
+    code = ord(char)
+
+    # 检查字符是否在任何一个范围内
+    for start, end in ranges:
+        if start <= code <= end:
+            return True
+    return False
+
+def is_digit(char):
+    """
+    判断一个字符是否是数字
+    """
+    ranges = [
+        (0x0030, 0x0039),  # 拉丁数字（ASCII 0-9）
+        (0xFF10, 0xFF19),  # 全角数字（全角 0-9）
     ]
 
     # 将字符转换为 Unicode 编码

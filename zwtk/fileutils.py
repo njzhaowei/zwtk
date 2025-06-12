@@ -101,6 +101,14 @@ def readcsv(path, enc='utf-8', default=None):
         rtn = list(reader)
     return rtn
 
+def json2csv(path, jsonarr, enc='utf-8'):
+    if jsonarr is None or len(jsonarr) == 0:
+        return
+    with open(path, 'w', newline='', encoding=enc) as fp:
+        writer = csv.DictWriter(fp, fieldnames=jsonarr[0].keys())
+        writer.writeheader()
+        writer.writerows(jsonarr)
+
 def file_encode_convert(src, dst, src_encode='utf-8', dst_encode='gbk'):
     '''Change file encode'''
     src_encode = src_encode.lower()

@@ -2,6 +2,7 @@
 (d)ict (l)ist (s)et (o)bject) utils
 '''
 import collections
+from collections.abc import Iterable
 from operator import itemgetter
 from itertools import groupby
 from inspect import ismethod, isbuiltin
@@ -307,3 +308,23 @@ def listgroupby(arr, key, copy=False):
     arr.sort(key=itemgetter(key))
     grp = groupby(arr, itemgetter(key))
     return [(key, list(group)) for key, group in grp]
+
+def is_iterable(obj):
+    """安全判断对象是否可迭代"""
+    # 排除明显不是可迭代的类型
+    if isinstance(obj, (str, bytes, bytearray)):
+        return True  # 字符串是可迭代的
+    
+    # 使用Iterable检查
+    if isinstance(obj, Iterable):
+        return True
+    
+    # 特殊情况：检查是否有__getitem__方法（用于序列类型）
+    if hasattr(obj, '__getitem__'):
+        try:
+            # 尝试创建一个虚拟索引
+            obj[0:0]
+            return True
+        except (TypeError, IndexError, KeyError):
+            pass    
+    return False

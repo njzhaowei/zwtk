@@ -47,6 +47,9 @@ class ZWObject(object):
             del self._keycur
         return rtn
 
+    def __str__(self):
+        return str(self.as_dict())
+
 def _ismethod(o):
     return ismethod(o) or isbuiltin(o)
 

@@ -37,10 +37,12 @@ class Config():
         self.data[key] = val
     
     def get(self, key, default):
-        return self.data[key] if key in self.data else default
+        r = self.data[key] if key in self.data else default
+        return dict2obj(r) if isinstance(r, dict) else r
     
     def getset(self, key, default):
         r = self.data[key] if key in self.data else default
+        r = dict2obj(r) if isinstance(r, dict) else r
         self.set(key, r)
         return r
 
